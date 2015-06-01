@@ -1,0 +1,20 @@
+{
+    "chmod": "0755",
+    "directories": [
+        "src"
+    ],
+    "files": [
+        "LICENSE.md"
+    ],
+    "finder": [
+        {
+            "name": "*.php",
+            "exclude": ["tests","Tests"],
+            "in": "vendor"
+        }
+    ],
+    "git-version": "package_version",
+    "main": "src/console",
+    "output": "downloads/yiimin.phar",
+    "stub": true
+}

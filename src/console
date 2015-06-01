@@ -24,6 +24,6 @@ require __DIR__.'/MinifyCommand.php';
 use Symfony\Component\Console\Application;
 use YiiMinifyClientScriptPackage\MinifyCommand;
 
-$application = new Application('YiiMinifyClientScriptPackage', '0.1-dev');
+$application = new Application('YiiMinifyClientScriptPackage', '@package_version@');
 $application->add(new MinifyCommand());
 $application->run();
