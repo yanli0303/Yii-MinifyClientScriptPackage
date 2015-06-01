@@ -1,0 +1,29 @@
+#!/usr/bin/env php
+<?php
+// set to run indefinitely if needed
+set_time_limit(0);
+
+set_error_handler(function ($errno, $errstr, $errfile, $errline) {
+    // error was suppressed with the @-operator
+    if (0 === error_reporting()) {
+        return false;
+    }
+
+    throw new ErrorException($errstr, 0, $errno, $errfile, $errline);
+});
+
+require __DIR__.'/../vendor/autoload.php';
+require __DIR__.'/PhpParserHelper.php';
+require __DIR__.'/MinifyHelper.php';
+require __DIR__.'/MinifyOptions.php';
+require __DIR__.'/WrappingArrayPrettyPrinter.php';
+require __DIR__.'/YiiClientScriptPackage.php';
+require __DIR__.'/YiiConfig.php';
+require __DIR__.'/MinifyCommand.php';
+
+use Symfony\Component\Console\Application;
+use YiiMinifyClientScriptPackage\MinifyCommand;
+
+$application = new Application('YiiMinifyClientScriptPackage', '0.1-dev');
+$application->add(new MinifyCommand());
+$application->run();
