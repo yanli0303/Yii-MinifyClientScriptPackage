@@ -36,3 +36,7 @@ A PHP console application for minifying JavaScript and CSS files of a PHP Yii we
 	- Version:        2.4.7 (v2.4.8 has an issue on windows, see [Unable to specify absolute path for output file](https://github.com/yui/yuicompressor/issues/78))
     - Release date:   2013-05-15
     - License:        [BSD](https://github.com/yui/yuicompressor/blob/master/LICENSE.TXT)
+
+## TODO ##
+1. Known limits
+2. Array pretty printer
