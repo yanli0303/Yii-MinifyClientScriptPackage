@@ -15,10 +15,10 @@ A PHP console application for minifying JavaScript and CSS files of a PHP Yii we
 
 ## Usage ##
 1. Minify JavaScript and CSS files with [Ant-MinifyJsCss](https://github.com/yanli0303/Ant-MinifyJsCss)
-	> ant -Dsrc="path to Yii web application webroot" minify
-
-2. Execute command 
-	> php src/console "path to Yii web application webroot"
+    > ant -Dsrc="path to Yii web application webroot" minify
+2. Download *yiimin.phar* from [downloads](https://github.com/yanli0303/Yii-MinifyClientScriptPackage/tree/master/downloads)
+3. Open a new command/terminal window, change current directory to the *Yii web app webroot*, and execute following command
+    > php yiimin.phar minify
 
 ## Note ##
 
