@@ -32,11 +32,11 @@ A PHP console application for minifying JavaScript and CSS files of a PHP Yii we
 4. If the minified version already exists, it **won't be** overwritten
 5. By default, ignore the JavaScript and CSS files in both **node_modules** and **bower_components**
 
+## Limitations ##
+- Better to only register one client script package on a page/view. If you registered several packages on a page, make sure the packages don't depend on a same package, otherwise the resources of the shared package will be loaded on the page multiple times;
+-  Don't use [Yii::app()->getClientScript()>registerCssFile()](http://www.yiiframework.com/doc/api/1.1/CClientScript#registerCssFile-detail) or [Yii::app()->getClientScript()->registerScriptFile()](http://www.yiiframework.com/doc/api/1.1/CClientScript#registerScriptFile-detail) anymore; use [Yii::app()->getClientScript()->registerPackage()](http://www.yiiframework.com/doc/api/1.1/CClientScript#registerPackage-detail) instead.
+
 ## Run tests ##
 
 1. Install [composer](https://getcomposer.org/) and run `composer install`
 2. Install [PHPUnit](https://phpunit.de/) and run `phpunit`
-
-## TODO ##
-1. Known limitations
-2. Array pretty printer
