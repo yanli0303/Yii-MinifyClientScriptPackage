@@ -23,20 +23,14 @@ A PHP console application for minifying JavaScript and CSS files of a PHP Yii we
     - Extension of minified JavaScript files will be **.min.js**
     - JavaScript files will be minified with [Google Closure Compiler](https://github.com/google/closure-compiler)
 3. The minified files will be put in the same directory of unminified file
-4. If the minified version already exists, it won't be overwritten
+4. If the minified version already exists, it **won't be** overwritten
 5. By default, ignore the JavaScript and CSS files in both **node_modules** and **bower_components**
 
-## Vendors ##
+## Run tests ##
 
-1. [Google Closure Compiler](https://github.com/google/closure-compiler):
-    - Version:        v20150126
-    - Release date:   2015-01-27
-    - License:        [Apache License 2.0](https://github.com/google/closure-compiler#closure-compiler-license)
-2. [Yahoo YUI Compressor](http://yui.github.io/yuicompressor/):
-	- Version:        2.4.7 (v2.4.8 has an issue on windows, see [Unable to specify absolute path for output file](https://github.com/yui/yuicompressor/issues/78))
-    - Release date:   2013-05-15
-    - License:        [BSD](https://github.com/yui/yuicompressor/blob/master/LICENSE.TXT)
+1. Install [composer](https://getcomposer.org/) and run `composer install`
+2. Install [PHPUnit](https://phpunit.de/) and run `phpunit`
 
 ## TODO ##
-1. Known limits
+1. Known limitations
 2. Array pretty printer

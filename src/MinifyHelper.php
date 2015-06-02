@@ -152,7 +152,7 @@ class MinifyHelper
     {
         $isFirst = true;
         foreach ($files as $key => $fileName) {
-            $fileContent = file_get_contents($fileName);
+            $fileContent = @file_get_contents($fileName);
             if (false === $fileContent) {
                 throw new \Exception("Failed to get contents of '{$fileName}'.");
             }
@@ -162,7 +162,7 @@ class MinifyHelper
             }
 
             $flags = $isFirst ? 0 : FILE_APPEND;
-            if (!file_put_contents($saveAs, $fileContent.PHP_EOL, $flags)) {
+            if (!@file_put_contents($saveAs, $fileContent.PHP_EOL, $flags)) {
                 throw new \Exception("Failed to append the contents of '{$fileName}' into '{$saveAs}'.");
             }
 
