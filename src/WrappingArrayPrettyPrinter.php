@@ -4,6 +4,7 @@ namespace YiiMinifyClientScriptPackage;
 
 class WrappingArrayPrettyPrinter extends \PhpParser\PrettyPrinter\Standard
 {
+
     protected function getIndent(\PhpParser\Node $node)
     {
         $size = $node->getAttribute('indent', 0);
@@ -31,14 +32,22 @@ class WrappingArrayPrettyPrinter extends \PhpParser\PrettyPrinter\Standard
 
     public function pExpr_ArrayItem(\PhpParser\Node\Expr\ArrayItem $node)
     {
-        return (null !== $node->key ? $this->getIndent($node).$this->p($node->key).' => ' : '')
-                .($node->byRef ? '&' : '').$this->p($node->value);
+        $siblings = $node->getAttribute('siblings', 0);
+        $indent   = is_int($siblings) && $siblings > 1 ? $this->getIndent($node) : '';
+        return $indent.parent::pExpr_ArrayItem($node);
     }
 
     protected function updateIndent($statements, $indents)
     {
         if ($statements instanceof \PhpParser\Node) {
             $statements->setAttribute('indent', $indents);
+
+            if ($statements instanceof \PhpParser\Node\Expr\Array_) {
+                $itemsCount = count($statements->items);
+                foreach ($statements->items as $item) {
+                    $item->setAttribute('siblings', $itemsCount);
+                }
+            }
 
             $childIndent = $statements instanceof \PhpParser\Node\Expr\ArrayItem ? $indents : $indents + 1;
             foreach ($statements->getSubNodeNames() as $name) {
