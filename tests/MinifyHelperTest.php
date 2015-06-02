@@ -4,7 +4,6 @@ namespace YiiMinifyClientScriptPackage;
 
 class MinifyHelperTest extends \PHPUnit_Framework_TestCase
 {
-    const BASE_URL = '/MinifyTest';
 
     private static function getWebRoot()
     {
@@ -157,10 +156,10 @@ class MinifyHelperTest extends \PHPUnit_Framework_TestCase
         $data[] = array('http://www.google.com/path1/path2/../../path3/./path4/index.html', 'http://www.google.com/path3/path4/index.html');
         $data[] = array('http://www.google.com/path1/path2/../../../path3/path4/./index.html', 'http://www.google.com/../path3/path4/index.html');
 
-        $data[] = array(self::BASE_URL.'/../image/path0/./path0/../img.png', '/image/path0/img.png');
-        $data[] = array(self::BASE_URL.'/../image/path0/./path0/../path1/./path1/../img.png', '/image/path0/path1/img.png');
-        $data[] = array(self::BASE_URL.'/../image/path0/./path0/../path1/./path1/../path2/./path2/../path3/./path3/../img.png', '/image/path0/path1/path2/path3/img.png');
-        $data[] = array(self::BASE_URL.'/../../image/path0/./path0/../path1/./path1/../path2/./path2/../path3/./path3/../img.png', '/../image/path0/path1/path2/path3/img.png');
+        $data[] = array('/MinifyTest/../image/path0/./path0/../img.png', '/image/path0/img.png');
+        $data[] = array('/MinifyTest/../image/path0/./path0/../path1/./path1/../img.png', '/image/path0/path1/img.png');
+        $data[] = array('/MinifyTest/../image/path0/./path0/../path1/./path1/../path2/./path2/../path3/./path3/../img.png', '/image/path0/path1/path2/path3/img.png');
+        $data[] = array('/MinifyTest/../../image/path0/./path0/../path1/./path1/../path2/./path2/../path3/./path3/../img.png', '/../image/path0/path1/path2/path3/img.png');
         $data[] = array('///////////img.png', '///img.png');
 
         return $data;
