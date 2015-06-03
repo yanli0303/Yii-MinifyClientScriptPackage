@@ -20,7 +20,7 @@ A PHP console application for minifying JavaScript and CSS files of a PHP Yii we
 2. Download *yiimin.phar* from [downloads](https://github.com/yanli0303/Yii-MinifyClientScriptPackage/tree/master/downloads)
 
 3. Open a new command/terminal window, change current directory to the *Yii web app webroot*, and execute following command
-    > php yiimin.phar minify
+    > php yiimin.phar minify -v
 
 ## Note ##
 
