@@ -46,16 +46,18 @@ class MinifyOptions
             throw new \InvalidArgumentException('"publishDir" should be a string.');
         }
 
-        $this->publishDir = rtrim(ltrim(strtr($this->publishDir, '\\', '/'), '/'));
+        $this->publishDir = trim(strtr($this->publishDir, '\\', '/'), '/');
     }
 
     public function getPublishDir()
     {
+        $this->validate();
         return rtrim($this->appBasePath, '\\/').DIRECTORY_SEPARATOR.$this->publishDir;
     }
 
     public function getCssNewBaseUrl()
     {
+        $this->validate();
         return str_repeat('../', substr_count($this->publishDir, '/') + 1);
     }
 

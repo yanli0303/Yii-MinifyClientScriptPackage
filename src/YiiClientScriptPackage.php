@@ -158,9 +158,10 @@ class YiiClientScriptPackage
         $fileHashes = array();
         $tmpBigMin  = tempnam(sys_get_temp_dir(), 'min');
         if ('css' === $group && $options->rewriteCssUrl) {
-            MinifyHelper::concat($locals, $tmpBigMin, function($content, $url) use (&$options, &$fileHashes) {
+            $cssNewBaseUrl = $options->getCssNewBaseUrl();
+            MinifyHelper::concat($locals, $tmpBigMin, function($content, $url) use (&$cssNewBaseUrl, &$fileHashes) {
                 $fileHashes[] = hash('sha256', $content);
-                return MinifyHelper::rewriteCssUrl($content, $url, $options->getCssNewBaseUrl());
+                return MinifyHelper::rewriteCssUrl($content, $url, $cssNewBaseUrl);
             });
         } else {
             MinifyHelper::concat($locals, $tmpBigMin, function($content) use (&$fileHashes) {
