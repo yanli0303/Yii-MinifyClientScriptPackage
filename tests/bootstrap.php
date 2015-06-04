@@ -8,4 +8,3 @@ require __DIR__.'/../src/WrappingArrayPrettyPrinter.php';
 require __DIR__.'/../src/YiiClientScriptPackage.php';
 require __DIR__.'/../src/YiiConfig.php';
 require __DIR__.'/../src/MinifyCommand.php';
-require __DIR__.'/tools/TestHelper.php';

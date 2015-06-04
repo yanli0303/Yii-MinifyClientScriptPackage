@@ -135,13 +135,13 @@ class YiiClientScriptPackage
             if (!is_string($url) || MinifyHelper::isExternalUrl($url)) {
                 $externals[] = $url;
             } else {
-                $localFile = $this->urlToLocalPath($url, $options->appBasePath);
-                $minFile   = MinifyHelper::findMinifiedFile($localFile, $options->minFileSuffix);
+                $localFile = $this->urlToLocalPath($url, $options->getAppBasePath());
+                $minFile   = MinifyHelper::findMinifiedFile($localFile, $options->getMinFileSuffix());
                 if (empty($minFile)) {
                     throw new \Exception('The minified version was not found for: '.$localFile);
                 }
 
-                $locals[$url] = MinifyHelper::findMinifiedFile($localFile, $options->minFileSuffix);
+                $locals[$url] = MinifyHelper::findMinifiedFile($localFile, $options->getMinFileSuffix());
             }
         }
 
@@ -157,7 +157,7 @@ class YiiClientScriptPackage
 
         $fileHashes = array();
         $tmpBigMin  = tempnam(sys_get_temp_dir(), 'min');
-        if ('css' === $group && $options->rewriteCssUrl) {
+        if ('css' === $group && $options->getRewriteCssUrl()) {
             $cssNewBaseUrl = $options->getCssNewBaseUrl();
             MinifyHelper::concat($locals, $tmpBigMin, function($content, $url) use (&$cssNewBaseUrl, &$fileHashes) {
                 $fileHashes[] = hash('sha256', $content);
@@ -170,13 +170,14 @@ class YiiClientScriptPackage
             });
         }
 
-        $bigMin = $this->generateBigMinFileName($fileHashes, $options->minFileSuffix.'.'.$group);
-        $moveTo = $options->getPublishDir().DIRECTORY_SEPARATOR.$bigMin;
+        $bigMin = $this->generateBigMinFileName($fileHashes, $options->getMinFileSuffix().'.'.$group);
+        $moveTo = $options->getAppBasePath().DIRECTORY_SEPARATOR.$options->getPublishDir().DIRECTORY_SEPARATOR.$bigMin;
         if (!rename($tmpBigMin, $moveTo)) {
             throw new \Exception("Unable to move file from '{$tmpBigMin}' to '{$moveTo}'.");
         }
 
-        $externals[]  = $options->publishDir.'/'.$bigMin;
+        // Final items comprise of externals and the big min local file
+        $externals[]  = $options->getPublishDir().'/'.$bigMin;
         $this->$group = $externals;
     }
 

@@ -26,7 +26,7 @@ class YiiConfig
         }
 
         if (!is_file($configFile)) {
-            throw new \InvalidArgumentException($configFile.' is not a file.');
+            throw new \InvalidArgumentException('File not found: '.$configFile);
         }
 
         $phpCode          = file_get_contents($configFile);

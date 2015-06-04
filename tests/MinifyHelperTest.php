@@ -5,22 +5,6 @@ namespace YiiMinifyClientScriptPackage;
 class MinifyHelperTest extends \PHPUnit_Framework_TestCase
 {
 
-    private static function getWebRoot()
-    {
-        $webroot = sys_get_temp_dir().DIRECTORY_SEPARATOR.'MinifyHelperTest';
-        if (!is_dir($webroot)) {
-            TestHelper::createDirectory($webroot, 0755, true);
-        }
-
-        return $webroot;
-    }
-
-    public static function tearDownAfterClass()
-    {
-        parent::tearDownAfterClass();
-        TestHelper::removeDirectory(self::getWebRoot());
-    }
-
     private function createFiles($files)
     {
         if (!empty($files)) {
@@ -282,10 +266,11 @@ CSS;
 
     public function testConcat()
     {
+        $tmp   = sys_get_temp_dir();
         $files = array(
             'current' => __FILE__,
-            'style'   => self::getWebRoot().DIRECTORY_SEPARATOR.'style.css',
-            'script'  => self::getWebRoot().DIRECTORY_SEPARATOR.'script.js'
+            'style'   => $tmp.DIRECTORY_SEPARATOR.'style.css',
+            'script'  => $tmp.DIRECTORY_SEPARATOR.'script.js'
         );
         $this->createFiles($files);
 

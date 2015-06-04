@@ -4,61 +4,78 @@ namespace YiiMinifyClientScriptPackage;
 
 class MinifyOptions
 {
-    public $appBasePath;
+    private $appBasePath;
+    private $rewriteCssUrl;
+    private $minFileSuffix;
+    private $publishDir;
+    private $cssNewBaseUrl;
 
     /**
-     * @var bool Whether to rewrite "url()" rules of CSS after relocating CSS files.
-     * Defaults to true.
+     * @param string $appBasePath Root path to Yii web app (webroot).
+     * @param bool $rewriteCssUrl True to rewrite "url()" rules of CSS after relocating CSS files.
+     * @param string $minFileSuffix The filename(without extension) suffix of minified files.
+     * Defaults to '.min' which means a minified file is named as in "file.min.js".
+     * @param string $publishDir The path which is relative to appBasePath for publishing minified resources.
+     * @throws \InvalidArgumentException
+     * @throws Exception When the publish dir doesn't exist.
      */
-    public $rewriteCssUrl = true;
-
-    /**
-     * @var string The filename(without extension) suffix of minified files.
-     * Defaults to '.min' which means a minified file is named as in "jquery.min.js".
-     */
-    public $minFileSuffix = '.min';
-
-    /**
-     * The path which is relative to appBasePath for publishing minified resources.
-     * @var string
-     */
-    public $publishDir = 'assets';
-
-    protected function validate()
+    public function __construct($appBasePath, $rewriteCssUrl = true, $minFileSuffix = '.min', $publishDir = 'assets')
     {
-        if (!is_string($this->appBasePath)) {
-            throw new \InvalidArgumentException('"appBasePath" should be a string.');
+        if (!is_string($appBasePath)) {
+            throw new \InvalidArgumentException('$appBasePath should be a string.');
         }
 
-        if (!is_dir($this->appBasePath)) {
-            throw new \InvalidArgumentException('Directory not found: '.$this->appBasePath);
+        if (!is_dir($appBasePath)) {
+            throw new \InvalidArgumentException('Directory not found: '.$appBasePath);
+        }
+        $this->appBasePath = rtrim($appBasePath, '\\/');
+
+        if (!is_bool($rewriteCssUrl)) {
+            throw new \InvalidArgumentException('$rewriteCssUrl should be a boolean.');
+        }
+        $this->rewriteCssUrl = $rewriteCssUrl;
+
+        if (!is_string($minFileSuffix)) {
+            throw new \InvalidArgumentException('$minFileSuffix should be a string.');
+        }
+        $this->minFileSuffix = $minFileSuffix;
+
+        if (!is_string($publishDir)) {
+            throw new \InvalidArgumentException('$publishDir should be a string.');
         }
 
-        if (!is_bool($this->rewriteCssUrl)) {
-            throw new \InvalidArgumentException('"rewriteCssUrl" should be a boolean.');
+        $normalizedPublishDir = trim(strtr($publishDir, '\\', '/'), '/');
+        $absPublishDir        = $this->appBasePath.DIRECTORY_SEPARATOR.$normalizedPublishDir;
+        if (!is_dir($absPublishDir)) {
+            throw new \InvalidArgumentException('Directory not found: '.$absPublishDir);
         }
+        $this->publishDir    = $normalizedPublishDir;
+        $this->cssNewBaseUrl = str_repeat('../', substr_count($this->publishDir, '/') + 1);
+    }
 
-        if (!is_string($this->minFileSuffix)) {
-            throw new \InvalidArgumentException('"minFileSuffix" should be a string.');
-        }
+    public function getAppBasePath()
+    {
+        return $this->appBasePath;
+    }
 
-        if (!is_string($this->publishDir)) {
-            throw new \InvalidArgumentException('"publishDir" should be a string.');
-        }
+    public function getRewriteCssUrl()
+    {
+        return $this->rewriteCssUrl;
+    }
 
-        $this->publishDir = trim(strtr($this->publishDir, '\\', '/'), '/');
+    public function getMinFileSuffix()
+    {
+        return $this->minFileSuffix;
     }
 
     public function getPublishDir()
     {
-        $this->validate();
-        return rtrim($this->appBasePath, '\\/').DIRECTORY_SEPARATOR.$this->publishDir;
+        return $this->publishDir;
     }
 
     public function getCssNewBaseUrl()
     {
-        $this->validate();
-        return str_repeat('../', substr_count($this->publishDir, '/') + 1);
+        return $this->cssNewBaseUrl;
     }
 
 }

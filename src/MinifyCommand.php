@@ -37,7 +37,7 @@ class MinifyCommand extends Command
                 ->setDescription('Minify client script packages for a Yii web application.')
                 ->addOption('config', 'c', $configMode, 'Path to Yii config file. If you are using a separated file for "clientScript" component, use that file instead.', $configDefault)
                 ->addOption('appBasePath', 'a', $configMode, 'Root path of the Yii web application.', $appBasePathDefault)
-                ->addOption('rewriteCssUrl', 'r', InputOption::VALUE_OPTIONAL, 'Whether to rewrite "url()" rules after relocating CSS files.', true)
+                ->addOption('rewriteCssUrl', 'r', InputOption::VALUE_OPTIONAL, 'Whether to rewrite "url()" rules after relocating CSS files.', 'true')
                 ->addOption('minFileSuffix', 'm', InputOption::VALUE_OPTIONAL, 'The file name(without extension) suffix of minified files.', '.min')
                 ->addOption('publishDir', 'p', InputOption::VALUE_OPTIONAL, 'The path which is relative to "appBasePath" for publishing minified resources.', 'assets')
         ;
@@ -45,11 +45,11 @@ class MinifyCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $options                = new \YiiMinifyClientScriptPackage\MinifyOptions();
-        $options->appBasePath   = $input->getOption('appBasePath');
-        $options->rewriteCssUrl = $input->getOption('rewriteCssUrl');
-        $options->minFileSuffix = $input->getOption('minFileSuffix');
-        $options->publishDir    = $input->getOption('publishDir');
+        $appBasePath   = $input->getOption('appBasePath');
+        $rewriteCssUrl = 'true' === $input->getOption('rewriteCssUrl');
+        $minFileSuffix = $input->getOption('minFileSuffix');
+        $publishDir    = $input->getOption('publishDir');
+        $options       = new \YiiMinifyClientScriptPackage\MinifyOptions($appBasePath, $rewriteCssUrl, $minFileSuffix, $publishDir);
 
         $configFile = $input->getOption('config');
         $config     = new \YiiMinifyClientScriptPackage\YiiConfig($configFile);
