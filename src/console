@@ -13,13 +13,6 @@ set_error_handler(function ($errno, $errstr, $errfile, $errline) {
 });
 
 require __DIR__.'/../vendor/autoload.php';
-require __DIR__.'/PhpParserHelper.php';
-require __DIR__.'/MinifyHelper.php';
-require __DIR__.'/MinifyOptions.php';
-require __DIR__.'/WrappingArrayPrettyPrinter.php';
-require __DIR__.'/YiiClientScriptPackage.php';
-require __DIR__.'/YiiConfig.php';
-require __DIR__.'/MinifyCommand.php';
 
 use Symfony\Component\Console\Application;
 use YiiMinifyClientScriptPackage\MinifyCommand;

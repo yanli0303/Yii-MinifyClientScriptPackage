@@ -18,5 +18,10 @@
         "kherge/box": "^2.5",
         "phpunit/phpunit": "~4.5",
         "satooshi/php-coveralls": "dev-master"
+    },
+    "autoload": {
+        "psr-4": {
+            "YiiMinifyClientScriptPackage\\": "src/"
+        }
     }
 }

@@ -87,7 +87,7 @@ class YiiConfig
 
     /**
      * @param string $name
-     * @return \YiiMinifyClientScriptPackage\YiiClientScriptPackage
+     * @return YiiClientScriptPackage
      */
     protected function getClientScriptPackageByName($name)
     {
@@ -98,7 +98,7 @@ class YiiConfig
         }
     }
 
-    protected function resolveDepends(\YiiMinifyClientScriptPackage\YiiClientScriptPackage $package)
+    protected function resolveDepends(YiiClientScriptPackage $package)
     {
         if (empty($package->depends)) {
             return;
@@ -131,7 +131,7 @@ class YiiConfig
         $package->depends = $externalDepends;
     }
 
-    public function minifyClientScriptPackages(\YiiMinifyClientScriptPackage\MinifyOptions $options)
+    public function minifyClientScriptPackages(MinifyOptions $options)
     {
         foreach ($this->clientScriptPackages as $package) {
             $this->resolveDepends($package);

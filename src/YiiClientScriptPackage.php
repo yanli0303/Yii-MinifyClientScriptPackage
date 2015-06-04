@@ -126,7 +126,7 @@ class YiiClientScriptPackage
         return preg_replace('/[^A-Za-z0-9-]+/', '_', $this->name).'_'.$hash.$extension;
     }
 
-    protected function filterLocals($urls, \YiiMinifyClientScriptPackage\MinifyOptions $options)
+    protected function filterLocals($urls, MinifyOptions $options)
     {
         $externals = array();
         $locals    = array();
@@ -148,7 +148,7 @@ class YiiClientScriptPackage
         return array($externals, $locals);
     }
 
-    protected function minifyGroup($group, \YiiMinifyClientScriptPackage\MinifyOptions $options)
+    protected function minifyGroup($group, MinifyOptions $options)
     {
         list($externals, $locals) = $this->filterLocals($this->$group, $options);
         if (empty($locals)) {
@@ -181,7 +181,7 @@ class YiiClientScriptPackage
         $this->$group = $externals;
     }
 
-    public function minify(\YiiMinifyClientScriptPackage\MinifyOptions $options)
+    public function minify(MinifyOptions $options)
     {
         if (!$this->minified) {
             echo 'Package: '.$this->name.PHP_EOL;
