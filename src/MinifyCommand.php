@@ -2,10 +2,10 @@
 
 namespace YiiMinifyClientScriptPackage;
 
-use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
+use \Symfony\Component\Console\Command\Command;
+use \Symfony\Component\Console\Input\InputOption;
+use \Symfony\Component\Console\Input\InputInterface;
+use \Symfony\Component\Console\Output\OutputInterface;
 
 class MinifyCommand extends Command
 {
@@ -13,7 +13,7 @@ class MinifyCommand extends Command
     protected function configure()
     {
         $cwd                = getcwd();
-        $configMode         = Input\InputOption::VALUE_REQUIRED;
+        $configMode         = InputOption::VALUE_REQUIRED;
         $configDefault      = null;
         $appBasePathDefault = null;
 
@@ -24,10 +24,10 @@ class MinifyCommand extends Command
             $appBasePathDefault = $cwd;
 
             if (is_file($clientScript)) {
-                $configMode    = Input\InputOption::VALUE_OPTIONAL;
+                $configMode    = InputOption::VALUE_OPTIONAL;
                 $configDefault = $clientScript;
             } elseif (is_file($mainConfig)) {
-                $configMode    = Input\InputOption::VALUE_OPTIONAL;
+                $configMode    = InputOption::VALUE_OPTIONAL;
                 $configDefault = $mainConfig;
             }
         }
@@ -37,9 +37,9 @@ class MinifyCommand extends Command
                 ->setDescription('Minify client script packages for a Yii web application.')
                 ->addOption('config', 'c', $configMode, 'Path to Yii config file. If you are using a separated file for "clientScript" component, use that file instead.', $configDefault)
                 ->addOption('appBasePath', 'a', $configMode, 'Root path of the Yii web application.', $appBasePathDefault)
-                ->addOption('rewriteCssUrl', 'r', Input\InputOption::VALUE_OPTIONAL, 'Whether to rewrite "url()" rules after relocating CSS files.', true)
-                ->addOption('minFileSuffix', 'm', Input\InputOption::VALUE_OPTIONAL, 'The file name(without extension) suffix of minified files.', '.min')
-                ->addOption('publishDir', 'p', Input\InputOption::VALUE_OPTIONAL, 'The path which is relative to "appBasePath" for publishing minified resources.', 'assets')
+                ->addOption('rewriteCssUrl', 'r', InputOption::VALUE_OPTIONAL, 'Whether to rewrite "url()" rules after relocating CSS files.', true)
+                ->addOption('minFileSuffix', 'm', InputOption::VALUE_OPTIONAL, 'The file name(without extension) suffix of minified files.', '.min')
+                ->addOption('publishDir', 'p', InputOption::VALUE_OPTIONAL, 'The path which is relative to "appBasePath" for publishing minified resources.', 'assets')
         ;
     }
 
