@@ -33,20 +33,20 @@ class MinifyOptionsTest extends \PHPUnit_Framework_TestCase
         $tmp = sys_get_temp_dir();
 
         // $appBasePath should be a string.
-        $data[] = array('$appBasePath should be a string.', null);
+        $data[] = array('appBasePath is required.', null);
 
         // $appBasePath Directory not found
         $notExistDir = $tmp.DIRECTORY_SEPARATOR.'not exist dir'.uniqid();
         $data[]      = array('Directory not found: '.$notExistDir, $notExistDir);
 
         // $rewriteCssUrl should be a boolean.
-        $data[] = array('$rewriteCssUrl should be a boolean.', $tmp, 1);
+        $data[] = array('rewriteCssUrl should be a boolean.', $tmp, 1);
 
         // $minFileSuffix should be a string.
-        $data[] = array('$minFileSuffix should be a string.', $tmp, true, true);
+        $data[] = array('minFileSuffix is required.', $tmp, true, true);
 
         // $publishDir should be a string.
-        $data[] = array('$publishDir should be a string.', $tmp, true, '.min', true);
+        $data[] = array('publishDir is required.', $tmp, true, '.min', true);
 
         // $publishDir directory not found
         $notExistDir2 = 'not exist dir'.uniqid();

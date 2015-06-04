@@ -102,7 +102,7 @@ class MinifyCommandTest extends \PHPUnit_Framework_TestCase
     {
         $this->setUpForTestConfigure(true, false, false);
         $cmd = new MinifyCommand();
-        $this->assertConfigure($cmd, InputOption::VALUE_REQUIRED, sys_get_temp_dir(), null);
+        $this->assertConfigure($cmd, InputOption::VALUE_REQUIRED, null, null);
     }
 
     public function testConfigureMainPhpFound()

@@ -22,7 +22,7 @@ class MinifyOptions
     public function __construct($appBasePath, $rewriteCssUrl = true, $minFileSuffix = '.min', $publishDir = 'assets')
     {
         if (!is_string($appBasePath)) {
-            throw new \InvalidArgumentException('$appBasePath should be a string.');
+            throw new \InvalidArgumentException('appBasePath is required.');
         }
 
         if (!is_dir($appBasePath)) {
@@ -31,17 +31,17 @@ class MinifyOptions
         $this->appBasePath = rtrim($appBasePath, '\\/');
 
         if (!is_bool($rewriteCssUrl)) {
-            throw new \InvalidArgumentException('$rewriteCssUrl should be a boolean.');
+            throw new \InvalidArgumentException('rewriteCssUrl should be a boolean.');
         }
         $this->rewriteCssUrl = $rewriteCssUrl;
 
         if (!is_string($minFileSuffix)) {
-            throw new \InvalidArgumentException('$minFileSuffix should be a string.');
+            throw new \InvalidArgumentException('minFileSuffix is required.');
         }
         $this->minFileSuffix = $minFileSuffix;
 
         if (!is_string($publishDir)) {
-            throw new \InvalidArgumentException('$publishDir should be a string.');
+            throw new \InvalidArgumentException('publishDir is required.');
         }
 
         $normalizedPublishDir = trim(strtr($publishDir, '\\', '/'), '/');
