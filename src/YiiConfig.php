@@ -29,7 +29,7 @@ class YiiConfig
         $this->statements = $parser->parse($phpCode);
 
         $clientScriptPackages       = $this->findClientScriptPackagesExpression();
-        $this->clientScriptPackages = $this->getClientScriptPackages($clientScriptPackages->value);
+        $this->clientScriptPackages = $clientScriptPackages ? $this->getClientScriptPackages($clientScriptPackages->value) : array();
     }
 
     protected function findClientScriptExpression()
@@ -128,6 +128,10 @@ class YiiConfig
 
     public function minifyClientScriptPackages(MinifyOptions $options)
     {
+        if (empty($this->clientScriptPackages)) {
+            return;
+        }
+
         foreach ($this->clientScriptPackages as $package) {
             $this->resolveDepends($package);
         }

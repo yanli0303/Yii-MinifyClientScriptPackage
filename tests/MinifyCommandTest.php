@@ -176,7 +176,10 @@ class MinifyCommandTest extends \PHPUnit_Framework_TestCase
         }
 
         $cmd = new MinifyCommand();
+
+        ob_start();
         $cmd->run(new ArgvInput($argv), new ConsoleOutput());
+        ob_end_clean();
 
         $this->assertFileExists($configDir.($clientScriptExists ? 'clientscript.php' : 'main.php'));
         $this->assertFileExists($configDir.($clientScriptExists ? 'clientscript.php.bak' : 'main.php.bak'));
