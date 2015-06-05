@@ -2,10 +2,13 @@
 
 namespace YiiMinifyClientScriptPackage;
 
+use \Symfony\Component\Console\Output\ConsoleOutput;
+use \Symfony\Component\Console\Input\ArgvInput;
 use \Symfony\Component\Console\Input\InputOption;
 
 class MinifyCommandTest extends \PHPUnit_Framework_TestCase
 {
+    private static $dirToRemove = array();
 
     private static function tearDownForTestConfigure()
     {
@@ -58,6 +61,12 @@ class MinifyCommandTest extends \PHPUnit_Framework_TestCase
     {
         parent::tearDownAfterClass();
         self::tearDownForTestConfigure();
+
+        foreach (self::$dirToRemove as $dir) {
+            if (is_dir($dir)) {
+                TestHelper::removeDirectory($dir);
+            }
+        }
     }
 
     private function assertConfigure(MinifyCommand $cmd, $expectedConfigMode, $expectedAppBasePathDefault, $expectedConfigDefault)
@@ -125,6 +134,52 @@ class MinifyCommandTest extends \PHPUnit_Framework_TestCase
         $this->setUpForTestConfigure(true, true, true);
         $cmd = new MinifyCommand();
         $this->assertConfigure($cmd, InputOption::VALUE_OPTIONAL, $tmp, $clientScriptPhpFile);
+    }
+
+    public function setUpForTestExecute()
+    {
+        $appBasePath         = sys_get_temp_dir().DIRECTORY_SEPARATOR.microtime();
+        TestHelper::copyDirectory(__DIR__.DIRECTORY_SEPARATOR.'YiiWebApp', $appBasePath);
+        self::$dirToRemove[] = $appBasePath;
+
+        chdir($appBasePath);
+
+        return $appBasePath;
+    }
+
+    public function executeDataProvider()
+    {
+        $data = array();
+
+        $data[] = array(true);
+        $data[] = array(false);
+        $data[] = array(false, __DIR__.'/haha.not.exist.php');
+
+        return $data;
+    }
+
+    /**
+     * @dataProvider executeDataProvider
+     */
+    public function testExecute($clientScriptExists, $configFile = null)
+    {
+        $appBasePath = $this->setUpForTestExecute();
+        $configDir   = $appBasePath.DIRECTORY_SEPARATOR.'protected'.DIRECTORY_SEPARATOR.'config'.DIRECTORY_SEPARATOR;
+
+        if ($clientScriptExists) {
+            rename($configDir.'cs.php', $configDir.'clientscript.php');
+        }
+
+        $argv = array('minify');
+        if ($configFile) {
+            $argv[] = '-c '.$configFile;
+        }
+
+        $cmd = new MinifyCommand();
+        $cmd->run(new ArgvInput($argv), new ConsoleOutput());
+
+        $this->assertFileExists($configDir.($clientScriptExists ? 'clientscript.php' : 'main.php'));
+        $this->assertFileExists($configDir.($clientScriptExists ? 'clientscript.php.bak' : 'main.php.bak'));
     }
 
 }
