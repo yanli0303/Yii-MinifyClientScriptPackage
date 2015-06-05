@@ -1,0 +1,11 @@
+.page-header {
+    position: fixed;
+    top: 0;
+    border: 1px solid #e9e9e9;
+    width: 100%;
+    color: rgb(165,168,171);
+    background-color: #ffffff;
+    margin: 0;
+    z-index: 4;
+    font-size: 13px;
+}
