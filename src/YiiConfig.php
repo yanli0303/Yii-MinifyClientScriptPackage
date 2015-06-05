@@ -14,11 +14,6 @@ class YiiConfig
      */
     protected $clientScriptPackages;
 
-    public function getStatements()
-    {
-        return $this->statements;
-    }
-
     public function __construct($configFile)
     {
         if (!is_string($configFile)) {
@@ -151,12 +146,6 @@ class YiiConfig
     {
         $prettyPrinter = new WrappingArrayPrettyPrinter();
         return $prettyPrinter->prettyPrintFile($this->statements);
-    }
-
-    public function saveAs($filePath)
-    {
-        $phpCode = $this->render();
-        return file_put_contents($filePath, $phpCode);
     }
 
 }

@@ -34,12 +34,12 @@ Take the [YiiWebApp](https://github.com/yanli0303/Yii-MinifyClientScriptPackage/
             'js'      => array('jquery-1.11.3.min.js')
         ),
         'layout'   => array(
-            'baseUrl' => '',
-            'js'      => array('css/layout/pageHeader.css', 'css/layout/pageFooter.css')
+            'baseUrl' => 'css/layout',
+            'css'     => array('pageHeader.css', 'pageFooter.css')
         ),
         'homePage' => array(
             'baseUrl' => '',
-            'depends' => array('jquery'),
+            'depends' => array('jquery', 'layout'),
             'js'      => array('js/homePage/homePage.js'),
             'css'     => array('css/homePage/homePage.css')
         )
@@ -70,19 +70,19 @@ After that, your config file will be changed to:
         ),
         'layout' => array(
             'baseUrl' => '',
-            'js' => array('assets/layout_d7863c9225aabcb...cf618.min.js')
+            'css' => array('assets/layout_d7863...48618.min.css')
         ),
         'homePage' => array(
             'baseUrl' => '',
             'depends' => array('jquery'),
-            'css' => array('assets/homePage_379c038778aa...620ae.min.css'),
-            'js' => array('assets/homePage_8cc592b51a3ca...7c458.min.js')
+            'css' => array('assets/homePage_d8e21...fa8f7.min.css'),
+            'js' => array('assets/homePage_8cc59...57c458.min.js')
         )
     )
 )
 ```
 
-And the *assets/homePage_379c038778aa...620ae.min.css* comprises the contents of following files:
+And the *assets/homePage_d8e21...fa8f7.min.css* comprises the contents of following files:
 - css/layout/pageHeader.min.css
 - css/layout/pageFooter.min.css
 - css/homePage/homePage.min.css

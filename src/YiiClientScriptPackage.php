@@ -81,11 +81,6 @@ class YiiClientScriptPackage
         }
     }
 
-    public function isMinified()
-    {
-        return $this->minified;
-    }
-
     protected function urlToLocalPath($url, $appBasePath)
     {
         $relativePath = MinifyHelper::normalizePath($url);

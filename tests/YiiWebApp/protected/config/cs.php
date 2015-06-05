@@ -9,11 +9,11 @@ return array(
         ),
         'layout'   => array(
             'baseUrl' => '',
-            'js'      => array('css/layout/pageHeader.css', 'css/layout/pageFooter.css')
+            'css'     => array('css/layout/pageHeader.css', 'css/layout/pageFooter.css')
         ),
         'homePage' => array(
             'baseUrl' => '',
-            'depends' => array('jquery'),
+            'depends' => array('jquery', 'layout'),
             'js'      => array('js/homePage/homePage.js'),
             'css'     => array('css/homePage/homePage.css')
         )
