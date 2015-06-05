@@ -89,7 +89,7 @@ And the *assets/homePage_d8e21...fa8f7.min.css* comprises the contents of follow
 
 ## Limitations ##
 - Better to only register one client script package on a page/view. If you registered several packages on a page, make sure the packages don't depend on a same package, otherwise the resources of the shared package will be loaded on the page multiple times;
--  Don't use [Yii::app()->getClientScript()>registerCssFile()](http://www.yiiframework.com/doc/api/1.1/CClientScript#registerCssFile-detail) or [Yii::app()->getClientScript()->registerScriptFile()](http://www.yiiframework.com/doc/api/1.1/CClientScript#registerScriptFile-detail) anymore; use [Yii::app()->getClientScript()->registerPackage()](http://www.yiiframework.com/doc/api/1.1/CClientScript#registerPackage-detail) instead.
+-  Don't use [registerCssFile](http://www.yiiframework.com/doc/api/1.1/CClientScript#registerCssFile-detail) or [registerScriptFile](http://www.yiiframework.com/doc/api/1.1/CClientScript#registerScriptFile-detail) anymore; use [registerPackage](http://www.yiiframework.com/doc/api/1.1/CClientScript#registerPackage-detail) instead.
 
 ## Run tests ##
 
