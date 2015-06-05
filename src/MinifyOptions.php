@@ -24,11 +24,11 @@ class MinifyOptions
         if (!is_string($appBasePath)) {
             throw new \InvalidArgumentException('appBasePath is required.');
         }
-
-        if (!is_dir($appBasePath)) {
-            throw new \InvalidArgumentException('Directory not found: '.$appBasePath);
-        }
         $this->appBasePath = rtrim($appBasePath, '\\/');
+
+        if (!is_dir($this->appBasePath)) {
+            throw new \InvalidArgumentException('Directory not found: '.$this->appBasePath);
+        }
 
         if (!is_bool($rewriteCssUrl)) {
             throw new \InvalidArgumentException('rewriteCssUrl should be a boolean.');
