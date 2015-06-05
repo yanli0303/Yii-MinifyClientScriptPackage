@@ -22,6 +22,70 @@ A PHP console application for minifying JavaScript and CSS files of a PHP Yii we
 3. Open a new command/terminal window, change current directory to the *Yii web app webroot*, and execute following command
     > php yiimin.phar minify -v
 
+Take the [YiiWebApp](https://github.com/yanli0303/Yii-MinifyClientScriptPackage/tree/master/tests/YiiWebApp) in tests as an example, suppose you have 3 client script packages defined in Yii web app config file [protected/config/main.php](https://github.com/yanli0303/Yii-MinifyClientScriptPackage/blob/master/tests/YiiWebApp/protected/config/main.php):
+
+```php
+'clientScript' => array(
+    'class'    => 'CClientScript',
+    'packages' => array(
+        'jquery'   => array(
+            'baseUrl' => '//code.jquery.com/',
+            'js'      => array('jquery-1.11.3.min.js')
+        ),
+        'layout'   => array(
+            'baseUrl' => '',
+            'js'      => array('css/layout/pageHeader.css', 'css/layout/pageFooter.css')
+        ),
+        'homePage' => array(
+            'baseUrl' => '',
+            'depends' => array('jquery'),
+            'js'      => array('js/homePage/homePage.js'),
+            'css'     => array('css/homePage/homePage.css')
+        )
+    )
+)
+```
+
+Firstly you need to minify each local JavaScript and CSS files, after doing so, you'll have the following files:
+- css/layout/pageHeader.min.css
+- css/layout/pageFooter.min.css
+- css/homePage/homePage.min.css
+- js/homePage/homePage.min.js
+
+Then, with this tool:
+
+1. Open a new terminal window, change current directory to *YiiWebApp*
+2. Run `php yiimin.phar minify -v`
+
+After that, your config file will be changed to:
+
+```php
+'clientScript' => array(
+    'class' => 'CClientScript',
+    'packages' => array(
+        'jquery' => array(
+            'baseUrl' => '//code.jquery.com',
+            'js' => array('jquery-1.11.3.min.js')
+        ),
+        'layout' => array(
+            'baseUrl' => '',
+            'js' => array('assets/layout_d7863c9225aabcb...cf618.min.js')
+        ),
+        'homePage' => array(
+            'baseUrl' => '',
+            'depends' => array('jquery'),
+            'css' => array('assets/homePage_379c038778aa...620ae.min.css'),
+            'js' => array('assets/homePage_8cc592b51a3ca...7c458.min.js')
+        )
+    )
+)
+```
+
+And the *assets/homePage_379c038778aa...620ae.min.css* comprises the contents of following files:
+- css/layout/pageHeader.min.css
+- css/layout/pageFooter.min.css
+- css/homePage/homePage.min.css
+
 ## Note ##
 
 1. Extension of CSS files should be **.css**
