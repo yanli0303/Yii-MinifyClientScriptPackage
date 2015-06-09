@@ -139,7 +139,7 @@ class MinifyCommandTest extends \PHPUnit_Framework_TestCase
     public function setUpForTestExecute()
     {
         $appBasePath         = sys_get_temp_dir().DIRECTORY_SEPARATOR.microtime();
-        TestHelper::copyDirectory(__DIR__.DIRECTORY_SEPARATOR.'YiiWebApp', $appBasePath);
+        TestHelper::copyDirectory(__DIR__.'/../YiiWebApp', $appBasePath);
         self::$dirToRemove[] = $appBasePath;
 
         chdir($appBasePath);
