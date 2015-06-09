@@ -2,6 +2,11 @@
 
 namespace YiiMinifyClientScriptPackage;
 
+use \PhpParser\Parser;
+use \PhpParser\Lexer\Emulative;
+use \PhpParser\Node\Expr\Include_;
+use \PhpParser\Node\Expr\Array_;
+
 class YiiConfig
 {
     /**
@@ -25,7 +30,7 @@ class YiiConfig
         }
 
         $phpCode          = file_get_contents($configFile);
-        $parser           = new \PhpParser\Parser(new \PhpParser\Lexer\Emulative());
+        $parser           = new Parser(new Emulative());
         $this->statements = $parser->parse($phpCode);
 
         $clientScriptPackages       = $this->findClientScriptPackagesExpression();
@@ -61,16 +66,16 @@ class YiiConfig
             return;
         }
 
-        if ($clientScript instanceof \PhpParser\Node\Expr\Include_) {
+        if ($clientScript instanceof Include_) {
             throw new \Exception('It seems the "clientScript" options are in a separated file, please specify that file as the config file.');
         }
 
-        if ($clientScript instanceof \PhpParser\Node\Expr\Array_) {
+        if ($clientScript instanceof Array_) {
             return PhpParserHelper::arrayGetItemByKey($clientScript, 'packages');
         }
     }
 
-    protected function getClientScriptPackages(\PhpParser\Node\Expr\Array_ $clientScriptPackages)
+    protected function getClientScriptPackages(Array_ $clientScriptPackages)
     {
         $packages = array();
         foreach ($clientScriptPackages->items as $package) {
@@ -143,7 +148,7 @@ class YiiConfig
         }
 
         $clientScriptPackages        = $this->findClientScriptPackagesExpression();
-        $clientScriptPackages->value = new \PhpParser\Node\Expr\Array_($items);
+        $clientScriptPackages->value = new Array_($items);
     }
 
     public function render()

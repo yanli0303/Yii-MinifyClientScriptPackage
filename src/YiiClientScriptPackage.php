@@ -2,6 +2,11 @@
 
 namespace YiiMinifyClientScriptPackage;
 
+use \PhpParser\Node\Expr\ArrayItem;
+use \PhpParser\Node\Expr\Array_;
+use \PhpParser\Node\Expr\BinaryOp\Concat;
+use \PhpParser\Node\Scalar\String_;
+
 class YiiClientScriptPackage
 {
     /**
@@ -52,24 +57,24 @@ class YiiClientScriptPackage
      * @param \PhpParser\Node\Expr\ArrayItem $package
      * @throws \Exception
      */
-    public function __construct(\PhpParser\Node\Expr\ArrayItem $package)
+    public function __construct(ArrayItem $package)
     {
         // $this->package->key should be an instance of \PhpParser\Node\Scalar\String_
         $this->name = $package->key->value;
 
         $baseUrlExpr   = PhpParserHelper::arrayGetValueByKey($package->value, 'baseUrl');
-        $this->baseUrl = isset($baseUrlExpr) ? rtrim($baseUrlExpr->value, '/') : null;
+        $this->baseUrl = isset($baseUrlExpr) && is_string($baseUrlExpr->value) ? rtrim($baseUrlExpr->value, '/') : null;
 
         $basePathExpr   = PhpParserHelper::arrayGetValueByKey($package->value, 'basePath');
         $this->basePath = isset($basePathExpr) ? $basePathExpr->value : null;
-        if (is_string($this->basePath)) {
+        if (!is_null($this->basePath)) {
             $reason = " This tool can't resolve basePath, because the path of alias can only be recognized by Yii framework at runtime.";
-            throw new \Exception("Can\'t resolve basePath of \"{$this->basePath}\" in package \"{$this->name}\".".$reason);
+            throw new \Exception("Can't resolve basePath of package \"{$this->name}\".".$reason);
         }
 
         foreach (array('depends', 'css', 'js') as $group) {
             $array        = PhpParserHelper::arrayGetValueByKey($package->value, $group);
-            $this->$group = $array instanceof \PhpParser\Node\Expr\Array_ ? PhpParserHelper::arrayGetValues($array) : array();
+            $this->$group = $array instanceof Array_ ? PhpParserHelper::arrayGetValues($array) : array();
         }
 
         // the package contains only external resources
@@ -106,8 +111,8 @@ class YiiClientScriptPackage
                 if (is_string($url)) {
                     $newArray[] = $base.$url;
                 } else {
-                    $left       = new \PhpParser\Node\Scalar\String_($base);
-                    $newArray[] = new \PhpParser\Node\Expr\BinaryOp\Concat($left, $url);
+                    $left       = new String_($base);
+                    $newArray[] = new Concat($left, $url);
                 }
             }
 
@@ -185,8 +190,6 @@ class YiiClientScriptPackage
             $this->minifyGroup('js', $options);
             $this->minified = true;
         }
-
-        $this->minified = true;
     }
 
     /**
@@ -194,7 +197,7 @@ class YiiClientScriptPackage
      */
     public function generateArrayItem()
     {
-        $key       = new \PhpParser\Node\Scalar\String_($this->name);
+        $key       = new String_($this->name);
         $items     = array();
         $itemsMeta = array(
             'baseUrl' => $this->isExternal ? $this->baseUrl : '',
@@ -207,13 +210,13 @@ class YiiClientScriptPackage
                 continue;
             }
 
-            $iKey    = new \PhpParser\Node\Scalar\String_($prop);
-            $iValue  = is_string($value) ? new \PhpParser\Node\Scalar\String_($value) : PhpParserHelper::generateArray($value);
-            $items[] = new \PhpParser\Node\Expr\ArrayItem($iValue, $iKey);
+            $iKey    = new String_($prop);
+            $iValue  = is_string($value) ? new String_($value) : PhpParserHelper::generateArray($value);
+            $items[] = new ArrayItem($iValue, $iKey);
         }
-        $value = new \PhpParser\Node\Expr\Array_($items);
+        $value = new Array_($items);
 
-        return new \PhpParser\Node\Expr\ArrayItem($value, $key);
+        return new ArrayItem($value, $key);
     }
 
 }

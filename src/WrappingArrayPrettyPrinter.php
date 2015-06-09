@@ -2,16 +2,21 @@
 
 namespace YiiMinifyClientScriptPackage;
 
-class WrappingArrayPrettyPrinter extends \PhpParser\PrettyPrinter\Standard
+use \PhpParser\PrettyPrinter\Standard;
+use \PhpParser\Node;
+use \PhpParser\Node\Expr\Array_;
+use \PhpParser\Node\Expr\ArrayItem;
+
+class WrappingArrayPrettyPrinter extends Standard
 {
 
-    protected function getIndent(\PhpParser\Node $node)
+    protected function getIndent(Node $node)
     {
         $size = $node->getAttribute('indent', 0);
         return is_int($size) && $size > 0 ? str_repeat('    ', $size) : '';
     }
 
-    public function pExpr_Array(\PhpParser\Node\Expr\Array_ $node)
+    public function pExpr_Array(Array_ $node)
     {
         if (1 < count($node->items)) {
             $indent = $this->getIndent($node);
@@ -30,7 +35,7 @@ class WrappingArrayPrettyPrinter extends \PhpParser\PrettyPrinter\Standard
         return parent::pCommaSeparated($nodes);
     }
 
-    public function pExpr_ArrayItem(\PhpParser\Node\Expr\ArrayItem $node)
+    public function pExpr_ArrayItem(ArrayItem $node)
     {
         $siblings = $node->getAttribute('siblings', 0);
         $indent   = is_int($siblings) && $siblings > 1 ? $this->getIndent($node) : '';
@@ -39,17 +44,17 @@ class WrappingArrayPrettyPrinter extends \PhpParser\PrettyPrinter\Standard
 
     protected function updateIndent($statements, $indents)
     {
-        if ($statements instanceof \PhpParser\Node) {
+        if ($statements instanceof Node) {
             $statements->setAttribute('indent', $indents);
 
-            if ($statements instanceof \PhpParser\Node\Expr\Array_) {
+            if ($statements instanceof Array_) {
                 $itemsCount = count($statements->items);
                 foreach ($statements->items as $item) {
                     $item->setAttribute('siblings', $itemsCount);
                 }
             }
 
-            $childIndent = $statements instanceof \PhpParser\Node\Expr\ArrayItem ? $indents : $indents + 1;
+            $childIndent = $statements instanceof ArrayItem ? $indents : $indents + 1;
             foreach ($statements->getSubNodeNames() as $name) {
                 $this->updateIndent($statements->$name, $childIndent);
             }
