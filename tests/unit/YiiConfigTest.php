@@ -2,27 +2,8 @@
 
 namespace YiiMinifyClientScriptPackage;
 
-class YiiConfigTest extends \PHPUnit_Framework_TestCase
+class YiiConfigTest extends BaseTestCase
 {
-    private static $filesToRemove = array();
-    private static $dirToRemove   = array();
-
-    public static function tearDownAfterClass()
-    {
-        parent::tearDownAfterClass();
-
-        foreach (self::$filesToRemove as $file) {
-            if (is_file($file)) {
-                unlink($file);
-            }
-        }
-
-        foreach (self::$dirToRemove as $dir) {
-            if (is_dir($dir)) {
-                TestHelper::removeDirectory($dir);
-            }
-        }
-    }
 
     public function constructExceptionDataProvider()
     {
@@ -99,8 +80,8 @@ class YiiConfigTest extends \PHPUnit_Framework_TestCase
     public function setUpForTestMinify()
     {
         $appBasePath         = sys_get_temp_dir().DIRECTORY_SEPARATOR.microtime();
-        TestHelper::copyDirectory(__DIR__.'/../YiiWebApp', $appBasePath);
-        self::$dirToRemove[] = $appBasePath;
+        self::copyDirectory(__DIR__.'/../YiiWebApp', $appBasePath);
+        self::$dirsToRemove[] = $appBasePath;
 
         return $appBasePath;
     }

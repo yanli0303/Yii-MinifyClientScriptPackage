@@ -6,9 +6,8 @@ use \Symfony\Component\Console\Output\ConsoleOutput;
 use \Symfony\Component\Console\Input\ArgvInput;
 use \Symfony\Component\Console\Input\InputOption;
 
-class MinifyCommandTest extends \PHPUnit_Framework_TestCase
+class MinifyCommandTest extends BaseTestCase
 {
-    private static $dirToRemove = array();
 
     private static function tearDownForTestConfigure()
     {
@@ -61,12 +60,6 @@ class MinifyCommandTest extends \PHPUnit_Framework_TestCase
     {
         parent::tearDownAfterClass();
         self::tearDownForTestConfigure();
-
-        foreach (self::$dirToRemove as $dir) {
-            if (is_dir($dir)) {
-                TestHelper::removeDirectory($dir);
-            }
-        }
     }
 
     private function assertConfigure(MinifyCommand $cmd, $expectedConfigMode, $expectedAppBasePathDefault, $expectedConfigDefault)
@@ -139,8 +132,8 @@ class MinifyCommandTest extends \PHPUnit_Framework_TestCase
     public function setUpForTestExecute()
     {
         $appBasePath         = sys_get_temp_dir().DIRECTORY_SEPARATOR.microtime();
-        TestHelper::copyDirectory(__DIR__.'/../YiiWebApp', $appBasePath);
-        self::$dirToRemove[] = $appBasePath;
+        self::copyDirectory(__DIR__.'/../YiiWebApp', $appBasePath);
+        self::$dirsToRemove[] = $appBasePath;
 
         chdir($appBasePath);
 

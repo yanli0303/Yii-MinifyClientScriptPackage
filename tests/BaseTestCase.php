@@ -2,8 +2,27 @@
 
 namespace YiiMinifyClientScriptPackage;
 
-class TestHelper
+class BaseTestCase extends \PHPUnit_Framework_TestCase
 {
+    protected static $filesToRemove = array();
+    protected static $dirsToRemove   = array();
+
+    public static function tearDownAfterClass()
+    {
+        parent::tearDownAfterClass();
+
+        foreach (self::$filesToRemove as $file) {
+            if (is_file($file)) {
+                unlink($file);
+            }
+        }
+
+        foreach (self::$dirsToRemove as $dir) {
+            if (is_dir($dir)) {
+                self::removeDirectory($dir);
+            }
+        }
+    }
 
     /**
      * Copied from Yii CFileHelper class.
