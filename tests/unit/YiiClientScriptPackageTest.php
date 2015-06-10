@@ -151,20 +151,40 @@ PHP;
                 'basePath'   => null,
                 'baseUrl'    => null,
                 'css'        => array(),
-                'js'         => array("js/homePage/alert.js", "js/homePage/homePage.js"),
+                'js'         => array("js/homePage/homePage.js"),
                 'isExternal' => false
             ), 'Package: file not found'.PHP_EOL, 'File not found: js/homePage/not_exist.js');
 
         // minified version was not found
-        $data[] = array('"min file not found" => array("js" => array("js/homePage/alert.js", "js/homePage/homePage.js"))', array(
+        $data[] = array('"min file not found" => array("js" => array("js/homePage/homePage.js"))', array(
                 'name'       => 'min file not found',
                 'depends'    => array(),
                 'basePath'   => null,
                 'baseUrl'    => null,
                 'css'        => array(),
-                'js'         => array("js/homePage/alert.js", "js/homePage/homePage.js"),
+                'js'         => array(),
                 'isExternal' => false
             ), 'Package: min file not found'.PHP_EOL, 'The minified version was not found for: ', array('js/homePage/homePage.min.js'));
+
+        $code   = <<<PHP
+'home' => array(
+    'baseUrl' => '',
+    'css'     => array('css/layout/pageHeader.css', 'css/layout/pageFooter.css'),
+    'js' => array('//code.jquery.com/jquery-1.11.3.min.js', 'js/homePage/homePage.js')
+)
+PHP;
+        $data[] = array($code, array(
+                'name'       => 'home',
+                'depends'    => array(),
+                'basePath'   => null,
+                'baseUrl'    => '',
+                'css'        => array('assets/home_d7863c9225bcf7aa095c87fc2c0c0b0090f0eadb53d9cb6431161211a1548618.min.css'),
+                'js'         => array(
+                    '//code.jquery.com/jquery-1.11.3.min.js',
+                    'assets/home_8cc592b513cac0e9def4e1ae6c8fc56d03b9769e9664ef769eb8d9b48d57c458.min.js'
+                ),
+                'isExternal' => false
+            ), 'Package: home'.PHP_EOL);
 
         return $data;
     }
@@ -220,9 +240,61 @@ PHP;
         }
     }
 
-    public function testGenerateArrayItem()
+    public function generateArrayItemDataProvider()
     {
-        
+        $data = array();
+
+        $external         = array(
+            'name'       => 'external',
+            'depends'    => array(),
+            'basePath'   => null,
+            'baseUrl'    => 'notnull',
+            'css'        => array('css/layout/pageHeader.css', 'css/layout/pageFooter.css'),
+            'js'         => array('//code.jquery.com/jquery-1.11.3.min.js'),
+            'isExternal' => true
+        );
+        $externalItems    = array(
+            new ArrayItem(new String_('notnull'), new String_('baseUrl')),
+            new ArrayItem(PhpParserHelper::generateArray(array('css/layout/pageHeader.css', 'css/layout/pageFooter.css')), new String_('css')),
+            new ArrayItem(PhpParserHelper::generateArray(array('//code.jquery.com/jquery-1.11.3.min.js')), new String_('js')),
+        );
+        $externalExpected = new ArrayItem(new Array_($externalItems), new String_('external'));
+        $data[]           = array($external, $externalExpected);
+
+        $notExternal         = array(
+            'name'       => 'notExternal',
+            'depends'    => array('jquery', 'shared'),
+            'basePath'   => null,
+            'baseUrl'    => 'notempty',
+            'css'        => array('css/layout/pageHeader.css', 'css/layout/pageFooter.css'),
+            'isExternal' => false
+        );
+        $notExternalItems    = array(
+            new ArrayItem(new String_(''), new String_('baseUrl')),
+            new ArrayItem(PhpParserHelper::generateArray(array('jquery', 'shared')), new String_('depends')),
+            new ArrayItem(PhpParserHelper::generateArray(array('css/layout/pageHeader.css', 'css/layout/pageFooter.css')), new String_('css')),
+        );
+        $notExternalExpected = new ArrayItem(new Array_($notExternalItems), new String_('notExternal'));
+        $data[]              = array($notExternal, $notExternalExpected);
+
+        return $data;
+    }
+
+    /**
+     * @dataProvider generateArrayItemDataProvider
+     */
+    public function testGenerateArrayItem($attributes, $expected)
+    {
+        $value     = new Array_();
+        $key       = new String_('package');
+        $arrayItem = new ArrayItem($value, $key);
+        $package   = new YiiClientScriptPackage($arrayItem);
+        foreach ($attributes as $prop => $value) {
+            $package->$prop = $value;
+        }
+
+        $actual = $package->generateArrayItem();
+        $this->assertEquals($expected, $actual);
     }
 
 }
