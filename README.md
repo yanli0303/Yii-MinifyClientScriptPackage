@@ -95,3 +95,9 @@ And the *assets/homePage_d8e21...fa8f7.min.css* comprises the contents of follow
 
 1. Install [composer](https://getcomposer.org/) and run `composer install`
 2. Install [PHPUnit](https://phpunit.de/) and run `phpunit`
+
+## Build PHAR from source ##
+
+1. Download [box.phar](https://github.com/box-project/box2)
+2. Open a new terminal/command prompt window, change current directory to this console application
+3. Run `php /path/to/box.phar build`, new **yiimin.phar** will be created in **downloads**
