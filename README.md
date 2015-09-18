@@ -17,13 +17,13 @@ A PHP console application for minifying JavaScript and CSS files of a PHP Yii we
 1. Minify JavaScript and CSS files with [Ant-MinifyJsCss](https://github.com/yanli0303/Ant-MinifyJsCss)
     > ant -Dsrc="path to Yii web application webroot" minify
 
-2. Download *yiimin.phar* from [downloads](https://github.com/yanli0303/Yii-MinifyClientScriptPackage/tree/master/downloads)
+2. Download *yiimin.phar* from [downloads](downloads)
 
 3. Open a new command/terminal window, change current directory to the *Yii web app webroot*, and execute following command
     > php yiimin.phar minify -v
 
 ## Example ##
-Take the [YiiWebApp](https://github.com/yanli0303/Yii-MinifyClientScriptPackage/tree/master/tests/YiiWebApp) in tests as an example, suppose you have 3 client script packages defined in Yii web app config file [protected/config/main.php](https://github.com/yanli0303/Yii-MinifyClientScriptPackage/blob/master/tests/YiiWebApp/protected/config/main.php):
+Take the [YiiWebApp](tests/YiiWebApp) in tests as an example, suppose you have 3 client script packages defined in Yii web app config file [protected/config/main.php](tests/YiiWebApp/protected/config/main.php):
 
 ```php
 'clientScript' => array(
